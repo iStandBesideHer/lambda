@@ -1,0 +1,12 @@
+{
+  "name": "iStandBesideHer-lambda",
+  "version": "1.0.0",
+  "description": "Lambda utilities",
+  "dependencies": {
+    "mustache": "^2.3.0",
+    "request": "^2.79.0"
+  },
+  "scripts": {
+    "zip": "rm -f ~/Downloads/iStandBesideHer-lambda.zip; zip -r ~/Downloads/iStandBesideHer-lambda.zip *"
+  }
+}
