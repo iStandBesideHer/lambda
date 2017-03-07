@@ -2,12 +2,13 @@ var Promise = require('bluebird');
 var rp = require('request-promise');
 var template = require('./template');
 var herPageGet = require('./her-page-get');
+var photo = require('./photo');
 
 // PUT /her-page/{id}?pagePW=hash
 // body: {
 //   herName: 'Robin West',
 //   pagePW: 'c3VnYXJsaXBz', // Changed or existing PW
-//   herPicture: (later)
+//   herPicture: base64 encoded png
 //   herDoing: 'What shes doing',
 //   whenMM: 
 //   whenDD:
@@ -30,6 +31,12 @@ exports.handler = function(event, response) {
         throw new Error('Invalid password');
       }
       return exports.mergeEntry(entry, putBody);
+    })
+    .then(function(mergedEntry){
+      if (putBody.herPicture) {
+        return exports.attachPicture(mergedEntry, putBody.herPicture);
+      }
+      return mergedEntry;
     })
     .then(function(mergedEntry){
       mergedEntry.workflowState = 1; // This publishes the entry
@@ -63,6 +70,31 @@ exports.mergeEntry = function(entry, putBody) {
       cc.whenYY = putBody.whenYY || cc.whenYY;
 
       return entry;
+    });
+};
+
+exports.attachPicture = function(mergedEntry, herPicture) {
+  return Promise.resolve()
+    .then(function() {
+      var imgBuff = Buffer.from(herPicture, 'base64');
+      return photo.upload('her-photo.png', 'image/png', imgBuff);
+    })
+
+    .then(function(photoInfo) {
+      // Merge photo into mergedEntry
+      var photoEntry = JSON.parse(JSON.stringify(template.photoEntry));
+      photoEntry.value.imageId = photoInfo.id;
+      var middleBlocks = mergedEntry.body.layout.rows[0].columns[1].blocks;
+      var topItem = middleBlocks[0];
+      if (topItem.type == 5) {
+        // Replace existing photo
+        middleBlocks[0] = photoEntry;
+      }
+      else {
+        // Add photo
+        middleBlocks.splice(0,0,photoEntry);
+      }
+      return mergedEntry;
     });
 };
 

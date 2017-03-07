@@ -45,19 +45,6 @@ template.blankHerPage = {
               "blocks": [
                 {
                   "type": 23,
-                  "id": "her-picture",
-                  "value": {
-                    "wysiwyg": {
-                      "source": "",
-                      "isSource": false,
-                      "mode": "htmlmixed",
-                      "engine": "source"
-                    },
-                    "html": "<img src=\"\" title=\"\" alt=\"\"/>"
-                  }
-                },
-                {
-                  "type": 23,
                   "id": "her-doing",
                   "value": {
                     "wysiwyg": {
@@ -152,6 +139,40 @@ template.blankHerPage = {
   "licensedAssetPreview": null,
   "licensedAssetId": null,
   "isPusher": true
+};
+
+template.photoEntry = {
+  "type": 5,
+  "id": "her-photo",
+  "value": {
+    "imageId": "",
+    "linkTo": "",
+    "newwindow": false,
+    "lightbox": false,
+    "lightboxTheme": "dark",
+    "aspectRatio": null,
+    "layout": "caption-below",
+    "stretch": false,
+    "description": {
+      "engine": "wysiwyg",
+      "source": "",
+      "html": ""
+    },
+    "floatDir": null,
+    "hSize": null,
+    "title": {
+      "engine": "wysiwyg",
+      "source": "",
+      "html": ""
+    },
+    "subtitle": {
+      "engine": "wysiwyg",
+      "source": "",
+      "html": ""
+    },
+    "designLayout": "inline",
+    "imagePosition": "center"
+  }
 };
 
 template.sqsHeaders = {
